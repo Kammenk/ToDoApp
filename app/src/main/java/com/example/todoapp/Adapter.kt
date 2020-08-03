@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.data.models.Priority
 import com.example.todoapp.data.models.ToDoData
+import com.example.todoapp.fragments.list.ListFragmentDirections
 import kotlinx.android.synthetic.main.todo_item.view.*
 import java.util.zip.Inflater
 
@@ -30,7 +32,12 @@ class Adapter: RecyclerView.Adapter<Adapter.MyViewHolder>() {
         var currentItem = dataList[position]
 
         holder.itemView.title_txt.text = currentItem.title
-        holder.itemView.description_txt.text = currentItem.title
+        holder.itemView.description_txt.text = currentItem.description
+
+        holder.itemView.row_background.setOnClickListener {
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
 
         val priority = currentItem.priority
         when(priority){

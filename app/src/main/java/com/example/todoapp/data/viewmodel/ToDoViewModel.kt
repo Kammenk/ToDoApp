@@ -12,14 +12,12 @@ import kotlinx.coroutines.launch
 
 class ToDoViewModel(application: Application): AndroidViewModel(application) {
 
-    private val toDoDao = ToDoDatabase.getDB(
-        application
-    ).toDoDao()
+    private val toDoDao = ToDoDatabase.getDB(application).toDoDao()
     private val repository: ToDoRepo
 
     val getAllData: LiveData<List<ToDoData>>
 
-    init{
+    init {
         repository = ToDoRepo(toDoDao)
         getAllData = repository.getAllData
     }
@@ -27,6 +25,24 @@ class ToDoViewModel(application: Application): AndroidViewModel(application) {
     fun insertData(toDoData: ToDoData){
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertData(toDoData)
+        }
+    }
+
+    fun updateData(toDoData: ToDoData){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.updateData(toDoData)
+        }
+    }
+
+    fun deleteData(toDoData: ToDoData){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteData(toDoData)
+        }
+    }
+
+    fun deleteAll(){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteAll()
         }
     }
 }
